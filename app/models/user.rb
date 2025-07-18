@@ -4,7 +4,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many :items, dependent: :destroy
-  has_many :orders, dependent: :destroy
 
   validates :nickname, presence: true
   validates :birthday, presence: true
