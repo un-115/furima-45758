@@ -1,5 +1,8 @@
 class ItemsController < ApplicationController
-  before_action :authenticate_user!, only: [:new]
+  before_action :authenticate_user!, only: [:new, :edit]
+  before_action :set_item, only: [:show, :edit, :update]
+  before_action :redirect_if_not_owner, only: [:edit, :update]
+
   def index
     @items = Item.all.order(created_at: :DESC)
   end
@@ -18,7 +21,6 @@ class ItemsController < ApplicationController
   end
 
   def show
-    @item = Item.find(params[:id])
     @category = Category.find(@item.category_id)
     @status = Status.find(@item.status_id)
     @fee_payer = FeePayer.find(@item.fee_payer_id)
@@ -27,7 +29,26 @@ class ItemsController < ApplicationController
     @user = User.find(@item.user_id)
   end
 
+  def edit
+  end
+
+  def update
+    if @item.update(item_params)
+      redirect_to item_path(@item)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   private
+
+  def set_item
+    @item = Item.find(params[:id])
+  end
+
+  def redirect_if_not_owner
+    redirect_to root_path if current_user.id != @item.user_id
+  end
 
   def item_params
     params.require(:item).permit(:name, :info, :category_id, :status_id, :fee_payer_id, :prefecture_id, :shopping_day_id, :price,
