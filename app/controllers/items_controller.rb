@@ -17,6 +17,16 @@ class ItemsController < ApplicationController
     end
   end
 
+  def show
+    @item = Item.find(params[:id])
+    @category = Category.find(@item.category_id)
+    @status = Status.find(@item.status_id)
+    @fee_payer = FeePayer.find(@item.fee_payer_id)
+    @prefecture = Prefecture.find(@item.prefecture_id)
+    @shopping_day = ShoppingDay.find(@item.shopping_day_id)
+    @user = User.find(@item.user_id)
+  end
+
   private
 
   def item_params
