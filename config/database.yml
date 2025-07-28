@@ -6,7 +6,7 @@ development:
   <<: *default
   adapter: mysql2
   username: root
-  password:
+  password: <%= ENV['DB_PASSWORD'] %>
   host: localhost
   database: furima-45758_development
 
@@ -14,7 +14,7 @@ test:
   <<: *default
   adapter: mysql2
   username: root
-  password:
+  password: <%= ENV['DB_PASSWORD'] %>
   host: localhost
   database: furima-45758_test
   pool: 10
